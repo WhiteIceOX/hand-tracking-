@@ -6,6 +6,7 @@ it at 60 FPS.
 """
 import sys
 import time
+import random
 import logging
 import threading
 import numpy as np
@@ -187,11 +188,10 @@ def key_callback(window, key, scancode, action, mods):
                 active_panels_count = 1
             
             # Trigger glitch transition on all panels when configuration changes
-            import time
             curr_t = time.perf_counter()
             for i in range(3):
                 last_cycle_time[i] = curr_t
-                
+
             # Play the transition sound when changing layout configuration
             utils.play_keyboard_sound()
             logger.info(f"Keyboard panels configuration: active panels count set to {active_panels_count}")
@@ -202,11 +202,10 @@ def key_callback(window, key, scancode, action, mods):
                 panel_modes[2] = (panel_modes[2] + 1) % 10
                 
                 # Trigger glitch transition on all panels when cycling filters
-                import time
                 curr_t = time.perf_counter()
                 for i in range(3):
                     last_cycle_time[i] = curr_t
-                    
+
                 # Play the transition sound when cycling filters in 3-panel mode
                 utils.play_keyboard_sound()
                 logger.info(f"Keyboard cycle (Key M): All panels cycled to modes: {panel_modes}")
@@ -215,15 +214,42 @@ def key_callback(window, key, scancode, action, mods):
 
 
 def main():
+    print()
+    print("  ================================================")
+    print("    AR Hand Panel - Pop-Art Edition")
+    print("    Dekatkan kedua tangan ke kamera untuk mulai!")
+    print("    Tekan Q atau Escape untuk keluar.")
+    print("  ================================================")
+    print()
+
     logger.info("Initializing AR Hand Panel (Pop-Art Style)...")
 
-    # Download model if not exists
-    model_path = utils.download_hand_landmarker_model()
+    # Download model jika belum ada
+    try:
+        model_path = utils.download_hand_landmarker_model()
+    except RuntimeError as e:
+        logger.critical(str(e))
+        print(f"\n  [ERROR] {e}")
+        sys.exit(1)
 
-    # Create hardware interfaces
-    camera = ThreadedCamera(config.CAMERA_INDEX, config.CAMERA_WIDTH, config.CAMERA_HEIGHT)
-    if not camera.start():
-        logger.critical("Failed to open camera!")
+    # Coba buka kamera — jika index default gagal, coba index lain secara otomatis
+    camera = None
+    camera_indices_to_try = [config.CAMERA_INDEX] + [i for i in range(4) if i != config.CAMERA_INDEX]
+    for cam_idx in camera_indices_to_try:
+        candidate = ThreadedCamera(cam_idx, config.CAMERA_WIDTH, config.CAMERA_HEIGHT)
+        if candidate.start():
+            camera = candidate
+            if cam_idx != config.CAMERA_INDEX:
+                logger.warning(f"Camera index {config.CAMERA_INDEX} tidak tersedia. Menggunakan index {cam_idx}.")
+                print(f"  [INFO] Kamera index {cam_idx} digunakan (index {config.CAMERA_INDEX} tidak tersedia).")
+            break
+        candidate.stop()
+
+    if camera is None:
+        logger.critical("Tidak ada kamera yang bisa dibuka! Pastikan webcam terhubung.")
+        print("\n  [ERROR] Kamera tidak ditemukan!")
+        print("  Pastikan webcam terhubung dan tidak digunakan aplikasi lain.")
+        print("  Buka TROUBLESHOOTING.md untuk panduan lebih lanjut.\n")
         sys.exit(1)
 
     logger.info(f"Camera started with resolution: {camera.width}x{camera.height}")
@@ -393,7 +419,6 @@ def main():
                 # Physical screen shaking displacement
                 jx, jy = 0.0, 0.0
                 if glitch_factor > 0.0:
-                    import random
                     # Shake displacement up to 0.03 normalized screen coordinates
                     jx = random.uniform(-0.03, 0.03) * glitch_factor
                     jy = random.uniform(-0.03, 0.03) * glitch_factor
