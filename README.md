@@ -78,6 +78,34 @@ Setiap kali filter berganti, panel aktif akan mengalami efek visual transisi gli
 2. 🖱️ **Klik 2x pada file `run.bat`**.
 3. 🎉 Aplikasi akan otomatis menyala dan siap dimainkan!
 
+> ⚠️ **Pertama kali install:** `run.bat` akan otomatis mendownload semua library yang dibutuhkan. Pastikan koneksi internet aktif dan tunggu hingga selesai (2–5 menit).
+
+---
+
+## 🛡️ Jika `run.bat` Diblokir Windows (SmartScreen)
+
+Beberapa laptop Windows 11 memblokir file `.bat` yang baru didownload. Ini **normal** dan bukan virus. Ikuti salah satu cara berikut:
+
+### Cara 1 — Unblock via Properties (Paling Mudah)
+1. Klik kanan file `run.bat`
+2. Pilih **Properties**
+3. Di bagian bawah, centang **"Unblock"** ✅
+4. Klik **OK**
+5. Klik 2x `run.bat` seperti biasa
+
+### Cara 2 — Jalankan sebagai Administrator
+1. Klik kanan file `run.bat`
+2. Pilih **"Run as administrator"**
+3. Klik **Yes** jika muncul popup konfirmasi
+
+### Cara 3 — Lewat Command Prompt
+1. Tekan `Win + R`, ketik `cmd`, tekan Enter
+2. Ketik perintah berikut lalu tekan Enter:
+   ```
+   cd /d "PATH_FOLDER_PROJECT"
+   run.bat
+   ```
+
 ---
 
 > 💡 *Butuh panduan instalasi dari nol? Buka:* **[`INSTALLATION.md`](INSTALLATION.md)** 🛠️  

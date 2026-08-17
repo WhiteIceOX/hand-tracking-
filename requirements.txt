@@ -2,13 +2,13 @@
 # Jalankan: pip install -r requirements.txt
 
 # Computer Vision & Hand Tracking
-mediapipe==0.10.14
-opencv-python==4.10.0.84
+mediapipe>=0.10.14
+opencv-python>=4.8.0
 
 # OpenGL Rendering
-PyOpenGL==3.1.7
-PyOpenGL-accelerate==3.1.7
-glfw==2.7.0
+PyOpenGL>=3.1.7
+PyOpenGL-accelerate>=3.1.7
+glfw>=2.5.0
 
 # Math & Arrays
-numpy==1.26.4
+numpy>=1.24.0,<3.0.0
