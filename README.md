@@ -1,4 +1,4 @@
-# 🕷️ AR Hand Panel — Miles Morales & Pop-Art Interactive Shaders 🖐️✨
+# 🕷️  Hand Tracking  ✨
 
 Aplikasi **Augmented Reality (AR)** interaktif berbasis **OpenGL** dan **MediaPipe AI Hand Landmarker** yang melacak pergerakan jari tangan secara real-time dan memproyeksikan panel seni visual pop-art serta estetika komik *Spider-Man: Into the Spider-Verse* langsung di antara ujung jari Anda! 🎨🚀
 
